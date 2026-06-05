@@ -32,19 +32,23 @@ export default async function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {registrations.map((reg: { id: Key | null | undefined; user: { name: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined }; event: { title: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined }; paymentReceiptUrl: string | undefined; status: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined }) => (
+            {registrations.map((reg) => (
               <tr key={reg.id} className="border-t">
                 <td className="p-4">{reg.user.name}</td>
                 <td className="p-4">{reg.event.title}</td>
                 <td className="p-4">
                   {reg.paymentReceiptUrl ? (
-                    <a href={reg.paymentReceiptUrl} target="_blank" className="text-blue-500 hover:underline">Lihat File</a>
-                  ) : "Belum Upload"}
+                    <a href={reg.paymentReceiptUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                      Lihat Bukti
+                    </a>
+                  ) : (
+                    <span className="text-gray-500">Belum Ada</span>
+                  )}
                 </td>
                 <td className="p-4">
-                  <span className={`px-2 py-1 rounded text-sm ${reg.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
-                    {reg.status}
-                  </span>
+                  {reg.status === "pending" && <span className="text-yellow-600">Pending</span>}
+                  {reg.status === "approved" && <span className="text-green-600">Approved</span>}
+                  {reg.status === "rejected" && <span className="text-red-600">Rejected</span>}
                 </td>
               </tr>
             ))}
