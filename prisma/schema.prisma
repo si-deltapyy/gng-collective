@@ -4,8 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // Gunakan Vercel Postgres atau Supabase
-  url      = env("DATABASE_URL")
+  provider = "postgresql" 
 }
 
 enum Role {
