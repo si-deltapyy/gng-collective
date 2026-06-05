@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import { redirect } from "next/navigation"
 import { PrismaClient } from "@prisma/client"
+import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react"
 
 const prisma = new PrismaClient()
 
@@ -8,8 +9,8 @@ export default async function AdminDashboard() {
   const session = await auth()
 
   // Otorisasi Sangat Ketat
-  if (!session || session.user?.role !== "ADMIN") {
-    redirect("/")
+  if (!session || session.user?.role !== "Admin") {
+    redirect("/") // Redirect ke dashboard biasa jika bukan admin
   }
 
   // Tarik data pendaftar
@@ -31,7 +32,7 @@ export default async function AdminDashboard() {
             </tr>
           </thead>
           <tbody>
-            {registrations.map(reg => (
+            {registrations.map((reg: { id: Key | null | undefined; user: { name: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined }; event: { title: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined }; paymentReceiptUrl: string | undefined; status: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined }) => (
               <tr key={reg.id} className="border-t">
                 <td className="p-4">{reg.user.name}</td>
                 <td className="p-4">{reg.event.title}</td>
