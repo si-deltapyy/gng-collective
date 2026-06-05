@@ -30,80 +30,112 @@ export default function RegisterPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center p-6 font-sans selection:bg-gray-300">
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-5%] w-96 h-96 bg-gray-200 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-96 h-96 bg-gray-300 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
+    <main className="min-h-screen bg-gray-200 flex items-center justify-center p-6 font-sans selection:bg-gray-900 selection:text-white relative overflow-hidden">
+      {/* Background Noise / Brutalist Texture */}
+      <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] mix-blend-overlay pointer-events-none"></div>
+      
+      {/* Abstract Typography Background */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[12rem] md:text-[15rem] font-black text-gray-300/30 whitespace-nowrap pointer-events-none tracking-tighter -rotate-6">
+        JOIN US
       </div>
 
-      <div className="relative z-10 w-full max-w-xl bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border border-gray-200 overflow-hidden">
-        <div className="bg-gray-900 px-10 py-12 text-center relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-          <h1 className="text-3xl font-black text-white mb-2 relative z-10 tracking-tight">
-            Bergabung dengan <span className="text-gray-400">GNG.</span>
+      {/* Main Register Card - Brutalist Style */}
+      <div className="relative z-10 w-full max-w-md bg-white border-4 border-gray-900 shadow-[12px_12px_0px_0px_rgba(17,24,39,1)] transition-all duration-300 my-10">
+        
+        {/* Header Section */}
+        <div className="bg-gray-900 px-8 py-10 text-left relative overflow-hidden group">
+          <p className="text-xs font-bold tracking-[0.2em] text-gray-400 mb-2 uppercase">
+            Collective // Registry
+          </p>
+          <h1 className="text-4xl font-black text-white uppercase tracking-tighter group-hover:text-red-500 transition-colors duration-300">
+            Bergabung.
           </h1>
-          <p className="text-gray-400 text-sm relative z-10 font-medium">
+          <p className="text-gray-400 text-sm mt-2 font-serif italic">
             Langkah pertama untuk Grow And Growth bersama kami.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="px-10 py-10 space-y-6">
-          {/* Tampilkan pesan error jika ada */}
+        {/* Form Section */}
+        <form onSubmit={handleSubmit} className="p-8 space-y-8">
+          
+          {/* Error Message Box (Sharp & Aggressive) */}
           {errorMessage && (
-            <div className="p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-medium">
+            <div className="p-4 bg-red-600 text-white border-2 border-gray-900 text-sm font-bold uppercase tracking-wide">
               {errorMessage}
             </div>
           )}
 
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-700 ml-1">Nama Lengkap</label>
+          {/* Input Nama */}
+          <div className="space-y-3 relative group">
+            <label className="text-xs font-black tracking-widest text-gray-900 uppercase block">
+              Nama Lengkap
+            </label>
             <input 
-              name="name" type="text" required placeholder="John Doe" 
-              className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-all placeholder-gray-400"
+              name="name" 
+              type="text" 
+              required 
+              placeholder="JOHN DOE" 
+              className="w-full px-0 py-3 bg-transparent border-b-2 border-gray-300 text-gray-900 rounded-none focus:outline-none focus:border-gray-900 transition-all font-medium placeholder-gray-300 uppercase"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-700 ml-1">Email Profesional</label>
+          {/* Input Email */}
+          <div className="space-y-3 relative group">
+            <label className="text-xs font-black tracking-widest text-gray-900 uppercase block">
+              Email Profesional
+            </label>
             <input 
-              name="email" type="email" required placeholder="john@example.com" 
-              className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-all placeholder-gray-400"
+              name="email" 
+              type="email" 
+              required 
+              placeholder="YOUR@EMAIL.COM" 
+              className="w-full px-0 py-3 bg-transparent border-b-2 border-gray-300 text-gray-900 rounded-none focus:outline-none focus:border-gray-900 transition-all font-medium placeholder-gray-300 uppercase"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-700 ml-1">Password</label>
+          {/* Input Password */}
+          <div className="space-y-3 relative group">
+            <label className="text-xs font-black tracking-widest text-gray-900 uppercase block">
+              Password
+            </label>
             <input 
-              name="password" type="password" required placeholder="••••••••" 
-              className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-all placeholder-gray-400"
+              name="password" 
+              type="password" 
+              required 
+              placeholder="••••••••" 
+              className="w-full px-0 py-3 bg-transparent border-b-2 border-gray-300 text-gray-900 rounded-none focus:outline-none focus:border-gray-900 transition-all font-medium placeholder-gray-300"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-700 ml-1">Role</label>
-            <select 
-              name="role" required // Pastikan atribut name ini ada
-              className="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-900 transition-all"
-            >
-              <option value="">Pilih Role Anda</option>
-              <option value="artist">Artist</option>
-              <option value="client">Client</option>
-            </select>
-          </div>
-
+          {/* Submit Button */}
           <button 
-            type="submit" disabled={isLoading}
-            className="w-full mt-6 flex items-center justify-center gap-2 py-4 bg-gray-900 text-white rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl hover:bg-gray-800 hover:-translate-y-0.5 transition-all disabled:opacity-70"
+            type="submit" 
+            disabled={isLoading}
+            className="w-full mt-8 flex items-center justify-center gap-2 py-5 bg-gray-900 text-white font-black text-xl uppercase tracking-widest border-2 border-gray-900 hover:bg-white hover:text-gray-900 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
           >
-            {isLoading ? "Memproses..." : "Selesaikan Pendaftaran"}
+            {isLoading ? (
+              <span className="animate-pulse">Memproses...</span>
+            ) : (
+              <>
+                Daftar Sekarang <span className="group-hover:translate-x-2 transition-transform">→</span>
+              </>
+            )}
           </button>
         </form>
 
-        <div className="px-10 py-6 bg-gray-50 border-t border-gray-100 text-center">
+        {/* Footer Link */}
+        <div className="p-6 bg-gray-100 border-t-2 border-gray-900 text-center">
           <p className="text-sm text-gray-600 font-medium">
-            Sudah terdaftar? <Link href="/login" className="text-gray-900 font-bold hover:underline">Masuk di sini</Link>
+            Sudah terdaftar dalam sistem? <br className="md:hidden" />
+            <Link 
+              href="/login" 
+              className="text-gray-900 font-black uppercase tracking-wider hover:text-red-600 hover:underline decoration-2 underline-offset-4 transition-all ml-1"
+            >
+              Akses Log In
+            </Link>
           </p>
         </div>
+        
       </div>
     </main>
   );

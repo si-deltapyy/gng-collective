@@ -39,7 +39,7 @@ export default function LandingPage() {
       {/* Navigation Bar */}
       <nav className="w-full p-6 flex justify-between items-center bg-white/70 backdrop-blur-md fixed top-0 z-50 shadow-sm border-b border-gray-200 transition-all duration-300">
         <div className="text-2xl font-black tracking-tighter text-gray-900 flex items-center gap-2 group cursor-pointer">
-          GNG
+          <img src="/logo.png" alt="GNG Logo" className="w-14 h-14 object-contain" />
           <span className="flex h-3 w-3 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-gray-900 group-hover:bg-red-500 transition-colors"></span>
