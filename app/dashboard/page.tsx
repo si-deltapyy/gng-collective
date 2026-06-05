@@ -1,25 +1,28 @@
-"use client";
+// Hapus "use client" di baris paling atas (jika ada)
 
-import { useSession, signOut } from "next-auth/react";
-export default function DashboardPage() {
-  const { data: session } = useSession();
-    if (!session) {
-    return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <p className="text-xl text-gray-600">You are not logged in. Please log in to access the dashboard.</p>
-      </div>
-    );
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+
+export default async function DashboardPage() {
+  // Ambil sesi langsung dari server
+  const session = await auth();
+
+  // Jika tidak ada user yang login, lempar kembali ke halaman login
+  if (!session || !session.user) {
+    redirect("/login");
   }
-    return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-2xl font-bold mb-4">Welcome, {session.user?.name}!</h1>
-      <p className="text-gray-600 mb-6">This is your dashboard.</p>
-        <button
-            onClick={() => signOut({ callbackUrl: "/" })}
-            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-        >
-            Sign Out
-        </button>
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-8 text-gray-900">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+        <h1 className="text-3xl font-bold mb-4">Selamat datang, {session.user.name}!</h1>
+        <p className="text-gray-600 mb-6">
+          Email Anda: {session.user.email} <br />
+          Role Anda: {session.user.role}
+        </p>
+        
+        {/* Konten Dashboard Lainnya */}
+      </div>
     </div>
   );
 }
