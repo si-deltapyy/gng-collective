@@ -21,7 +21,20 @@ export default async function DashboardPage() {
           Role Anda: {session.user.role}
         </p>
         
-        {/* Konten Dashboard Lainnya */}
+        <div className="space-x-4">
+          <a href="/pendaftaran/flash-tatto" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+            Daftar Flash Tattoo
+          </a>
+          <a href="/pendaftaran/live-painting" className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+            Daftar Live Painting
+          </a>
+        </div>
+
+        <div className="mt-8">
+          <a href="/api/auth/signout" className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+            Logout
+          </a>
+        </div>
       </div>
     </div>
   );
