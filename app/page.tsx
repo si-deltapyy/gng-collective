@@ -1,8 +1,12 @@
 "use client"; // Tambahkan ini karena kita akan menggunakan interaksi sisi klien (meski dominan CSS)
 
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function LandingPage() {
+  const { data: session, status } = useSession();
+
   return (
     <main className="min-h-screen bg-gray-50 text-gray-800 font-sans selection:bg-gray-900 selection:text-white overflow-hidden">
       {/* Kumpulan CSS Animasi Kustom yang Disematkan Langsung */}
@@ -46,12 +50,20 @@ export default function LandingPage() {
           </span>
         </div>
         <div className="space-x-6 flex items-center">
-          <Link href="/login" className="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">
-            LOG IN
-          </Link>
-          <Link href="/register" className="text-sm font-bold border-2 border-gray-900 text-gray-900 px-5 py-2 rounded-none hover:bg-gray-900 hover:text-white transition-all duration-300">
-            JOIN US
-          </Link>
+          {session ? (
+            <Link href="/dashboard" className="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">
+              DASHBOARD
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" className="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">
+                LOG IN
+              </Link>
+              <Link href="/register" className="text-sm font-bold border-2 border-gray-900 text-gray-900 px-5 py-2 rounded-none hover:bg-gray-900 hover:text-white transition-all duration-300">
+                JOIN US
+              </Link>
+            </>
+          )}
         </div>
       </nav>
 
@@ -68,19 +80,15 @@ export default function LandingPage() {
           
           <h1 className="animate-fade-in delay-200 text-6xl md:text-9xl font-black tracking-tighter text-gray-900 mb-6 leading-[0.85] uppercase">
             Move The <br />
-            <span className="font-serif italic text-gray-500 font-light lowercase">City</span> Rhythm.
+            <span className="font-serif italic text-gray-500 font-light lowercase mb-5">City</span> Rhythm.
           </h1>
-          
-          <p className="animate-fade-in delay-400 text-xl md:text-2xl text-gray-600 mt-8 mb-12 font-medium leading-relaxed max-w-2xl mx-auto">
-            Ruang untuk belajar, bergerak, dan berkembang bersama. Karena tumbuh sendirian belum tentu menciptakan perubahan.
-          </p>
           
           <div className="animate-fade-in delay-600 flex justify-center w-full">
             <Link 
               href="#batch-1" 
               className="group relative px-10 py-5 bg-gray-900 text-white font-black text-xl hover:scale-105 transition-all duration-500 overflow-hidden rounded-full flex items-center gap-4"
             >
-              EKSPLORASI BATCH 1
+              EXPLORE NOW
               <span className="group-hover:rotate-90 group-hover:translate-x-1 transition-transform duration-300 inline-block">↓</span>
             </Link>
           </div>
@@ -108,9 +116,6 @@ export default function LandingPage() {
           
           <div className="md:col-span-7 space-y-8 text-xl text-gray-600 font-medium leading-relaxed">
             <p className="first-letter:text-7xl first-letter:font-black first-letter:text-gray-900 first-letter:float-left first-letter:mr-4 first-letter:mt-2">
-              Ruang ini berawal dari sebuah keresahan tentang Surakarta—kota yang dikenal dengan budaya dan kreativitasnya, namun output dari ekosistem tersebut sering kali belum terlihat dan belum terhubung secara merata.
-            </p>
-            <p>
               Potensi yang besar belum sepenuhnya bertumbuh menjadi pergerakan yang saling menguatkan. Ketika proses dijalani bersama, peluang untuk menciptakan koneksi, kolaborasi, dan kesempatan baru menjadi jauh lebih besar.
             </p>
             
@@ -118,12 +123,12 @@ export default function LandingPage() {
             <div className="relative p-10 bg-white border border-gray-200 art-hover transition-all duration-500 my-12 group">
               <div className="absolute -top-6 -left-6 text-6xl text-gray-300 group-hover:text-gray-700 font-serif">"</div>
               <p className="text-2xl font-serif italic relative z-10">
-                Melanjutkan semangat dari pergerakan yang sudah ada, kami percaya bahwa di tengah citra Surakarta sebagai kota slow living, saling terhubung dan saling mendukung justru mampu menciptakan ritme baru bagi kota ini.
+               Kami percaya bahwa di tengah citra Surakarta sebagai kota slow living, saling terhubung dan saling mendukung justru mampu menciptakan ritme baru bagi kota ini.
               </p>
             </div>
             
             <p>
-              Karena perubahan tidak selalu lahir dari sesuatu yang besar. Kadang ia berawal dari <span className="line-through decoration-gray-900 decoration-2">noise kecil</span>, ruang kecil, media kecil, dan orang-orang yang memilih untuk tetap bergerak.
+              Karena perubahan tidak selalu lahir dari sesuatu yang besar. Kadang ia berawal dari <i><b className="text-lg">Noise Kecil</b></i>, ruang kecil, media kecil, dan orang-orang yang memilih untuk <b>Tetap Bergerak</b>.
             </p>
           </div>
         </div>
@@ -134,25 +139,19 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row-reverse gap-16 items-center">
           <div className="md:w-1/2">
             <h2 className="text-xs font-bold tracking-[0.2em] text-gray-500 mb-4 uppercase">Tentang Kami</h2>
-            <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
+            {/* <h3 className="text-4xl md:text-5xl font-black text-gray-900 mb-6 leading-tight">
               GNG COLLECTIVE.
-            </h3>
+            </h3> */}
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-              Grow And Growth (GNG) bukan sekadar event organizer atau komunitas biasa. Kami adalah sebuah <strong>kolektif seni, ruang diskusi, dan inkubator ide</strong>. Kami memfasilitasi seniman, kreator, dan pemikir yang merasa suaranya tertahan oleh ekspektasi lingkungan sekitarnya.
-            </p>
+               Ruang untuk belajar, bergerak, dan berkembang bersama. Karena tumbuh sendirian belum tentu menciptakan perubahan.
+             </p>
             <p className="text-lg text-gray-700 leading-relaxed border-l-4 border-gray-900 pl-4">
-              Kami memadukan seni visual, dialog interaktif, dan ekspresi mentah untuk menciptakan ekosistem di mana "noise" di dalam kepala Anda bisa diterjemahkan menjadi karya nyata yang berdampak.
+              Ruang ini berawal dari sebuah keresahan tentang Surakarta—kota yang dikenal dengan budaya dan kreativitasnya, namun output dari ekosistem tersebut sering kali belum terlihat dan belum terhubung secara merata.
             </p>
           </div>
           
           <div className="md:w-1/2 w-full grid grid-cols-2 gap-4">
-            {/* Abstract Image Placeholders / Art blocks */}
-            <div className="bg-gray-400 aspect-square rounded-tl-[3rem] rounded-br-[3rem] hover:rounded-none transition-all duration-500 flex items-center justify-center p-6 text-center">
-               <span className="font-serif italic text-2xl text-gray-200">Grow</span>
-            </div>
-            <div className="bg-gray-900 aspect-square rounded-tr-[3rem] rounded-bl-[3rem] hover:rounded-none transition-all duration-500 translate-y-8 flex items-center justify-center p-6 text-center">
-               <span className="font-black text-2xl text-gray-400 uppercase tracking-widest">Growth</span>
-            </div>
+              <img src="/text-gng.png" alt="GNG Logo" className="w-full h-auto object-contain" />
           </div>
         </div>
       </section>
@@ -165,12 +164,12 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row gap-16 items-start mb-24 border-b border-gray-800 pb-16">
             <div className="md:w-7/12">
-              <div className="inline-block mb-6 px-3 py-1 bg-white text-black text-xs font-black tracking-[0.2em] uppercase">
-                EVENT BATCH 1
+              <div className="inline-block mb-6 px-3 py-1 text-white text-s font-black tracking-[0.2em] uppercase">
+                Pameran Karya, Live Painting, <br/>Live Mural/Grafity, dan Tattoo Flash
               </div>
               <h2 className="text-6xl md:text-8xl font-black text-white mb-2 tracking-tighter hover:text-red-500 transition-colors duration-300 cursor-default">
                 PRETTY <br/>
-                <span className="text-gray-600 line-through decoration-red-500 decoration-4">ANGRY</span>
+                <span className="text-gray-600">ANGRY</span>
               </h2>
               <h3 className="text-3xl font-serif italic text-gray-400 mb-8 mt-4">Soft Outside, Loud Inside.</h3>
               
@@ -183,10 +182,10 @@ export default function LandingPage() {
             </div>
             
             <div className="md:w-5/12 w-full flex flex-col justify-center items-end text-right">
-              <p className="text-gray-500 mb-8 font-medium">Buka pendaftaran untuk Artist (Pelaku Seni) dan Client (Partisipan).</p>
+              <p className="text-gray-500 mb-8 font-medium">Tidak hanya datang tapi kamu juga bisa berpartisipasi.</p>
               <Link 
                 href="/register" 
-                className="w-full text-center px-10 py-6 bg-white text-black font-black text-2xl uppercase hover:bg-red-500 hover:text-white transition-all duration-300"
+                className="w-full text-center border-2 border-white px-10 py-6 bg-transparent text-white font-black text-2xl uppercase hover:bg-white hover:text-black transition-all duration-300"
               >
                 DAFTAR SEKARANG
               </Link>

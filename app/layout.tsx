@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./components/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -43,11 +45,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="id">
+      <body className={geistMono.variable + " " + geistSans.variable + " bg-white text-gray-900 font-sans selection:bg-blue-200 selection:text-blue-900"}>
+        {/* 2. Bungkus children dengan Providers */}
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }

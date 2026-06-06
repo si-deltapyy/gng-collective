@@ -52,15 +52,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.role
+        token.role = user.role;
+        token.id = user.id; // <-- 1. Simpan ID ke dalam token JWT
       }
-      return token
+      return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.role = token.role as string
+        session.user.role = token.role as string;
+        session.user.id = token.id as string; // <-- 2. Teruskan ID dari token ke Session
       }
-      return session
+      return session;
     }
   }
 })

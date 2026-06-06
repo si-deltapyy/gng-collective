@@ -107,6 +107,8 @@ export default function RegisterPage() {
             />
           </div>
 
+          <input type="hidden" name="role" value="USER" />
+
           {/* Submit Button */}
           <button 
             type="submit" 

@@ -1,7 +1,5 @@
-
 generator client {
   provider = "prisma-client-js"
-  // output   = "/app/generated/prisma-client"
 }
 
 datasource db {
@@ -15,31 +13,36 @@ enum Role {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String
-  email         String    @unique
-  password      String    // Akan di-hash dengan bcrypt
-  role          Role      @default(USER)
+  email         String         @unique
+  password      String
+  phone         String?        // No WA
+  age           Int?           // Umur
+  gender        String?        // Laki-laki / Perempuan
+  role          Role           @default(USER)
   registrations Registration[]
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime       @default(now())
 }
 
 model Event {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
+  slug          String         @unique // Contoh: "flash-tattoo", "live-painting"
   title         String
   description   String
-  date          DateTime
+  date          DateTime       @default(now())
   registrations Registration[]
 }
 
 model Registration {
-  id            String    @id @default(cuid())
-  userId        String
-  eventId       String
-  paymentReceiptUrl String? // URL dari Vercel Blob
-  status        String    @default("PENDING") // PENDING, APPROVED, REJECTED
+  id                String   @id @default(cuid())
+  userId            String
+  eventId           String
+  qualification     String   @default("UMUM") // UMUM atau MAHASISWA
+  paymentReceiptUrl String?  
+  status            String   @default("PENDING") 
   
-  user          User      @relation(fields: [userId], references: [id])
-  event         Event     @relation(fields: [eventId], references: [id])
-  createdAt     DateTime  @default(now())
+  user              User     @relation(fields: [userId], references: [id])
+  event             Event    @relation(fields: [eventId], references: [id])
+  createdAt         DateTime @default(now())
 }

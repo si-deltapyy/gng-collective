@@ -7,6 +7,7 @@ declare module "next-auth" {
    */
   interface Session {
     user: {
+      id: string
       role: string
     } & DefaultSession["user"]
   }
@@ -15,6 +16,7 @@ declare module "next-auth" {
    * Mengembalikan tipe dari `user` bawaan NextAuth yang sudah ditambahkan `role`
    */
   interface User {
+    id: string
     role: string
   }
 }
