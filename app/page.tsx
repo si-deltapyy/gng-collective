@@ -56,10 +56,10 @@ export default function LandingPage() {
             </Link>
           ) : (
             <>
-              <Link href="/login" className="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">
+              <Link href="/auth" className="text-sm font-bold text-gray-500 hover:text-gray-900 transition-colors">
                 LOG IN
               </Link>
-              <Link href="/register" className="text-sm font-bold border-2 border-gray-900 text-gray-900 px-5 py-2 rounded-none hover:bg-gray-900 hover:text-white transition-all duration-300">
+              <Link href="/auth" className="text-sm font-bold border-2 border-gray-900 text-gray-900 px-5 py-2 rounded-none hover:bg-gray-900 hover:text-white transition-all duration-300">
                 JOIN US
               </Link>
             </>
@@ -184,7 +184,7 @@ export default function LandingPage() {
             <div className="md:w-5/12 w-full flex flex-col justify-center items-end text-right">
               <p className="text-gray-500 mb-8 font-medium">Tidak hanya datang tapi kamu juga bisa berpartisipasi.</p>
               <Link 
-                href="/register" 
+                href="/auth" 
                 className="w-full text-center border-2 border-white px-10 py-6 bg-transparent text-white font-black text-2xl uppercase hover:bg-white hover:text-black transition-all duration-300"
               >
                 DAFTAR SEKARANG
