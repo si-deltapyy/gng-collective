@@ -1,18 +1,19 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
+import { KirimAuthWA } from "./waActions";
 import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient();
 
 export async function registerUser(formData: FormData) {
   const name = formData.get("name") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const role = formData.get("role") as string;
+  const phone = formData.get("phone") as string;
 
   // Validasi input dasar
-  if (!name || !email || !password || !role) {
+  if (!name || !email || !password || !role || !phone) {
     return { error: "Semua field harus diisi!" };
   }
 
@@ -34,9 +35,15 @@ export async function registerUser(formData: FormData) {
       data: {
         name,
         email,
+        phone,
         password: hashedPassword,
         role: "USER",
       },
+    });
+
+    await KirimAuthWA({
+      nama: name,
+      no_wa: phone, // Anda bisa menambahkan input nomor WA di form registrasi jika ingin mengirim pesan ini
     });
 
     return { success: true };

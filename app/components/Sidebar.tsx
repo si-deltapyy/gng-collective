@@ -1,5 +1,6 @@
 "use client";
 
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -65,15 +66,12 @@ export default function Sidebar({ user }: { user: any }) {
             <p className="text-sm font-semibold text-gray-800">{user?.name}</p>
             <p className="text-xs text-gray-500 truncate">{user?.email}</p>
           </div>
-          <Link 
-            href="/api/auth/signout" 
-            className="flex items-center gap-3 px-4 py-3 text-red-600 font-medium rounded-xl hover:bg-red-50 transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-            Keluar Akun
-          </Link>
+          <button 
+              onClick={() => signOut({ callbackUrl: '/auth' })} 
+              className="w-full py-2 text-center text-xs font-bold uppercase text-red-400 hover:text-red-300 transition-colors"
+            >
+              LOGOUT SYSTEM
+            </button>
         </div>
       </aside>
     </>

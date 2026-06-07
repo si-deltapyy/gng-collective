@@ -13,6 +13,7 @@ async function main() {
       slug: 'flash-tattoo',
       title: 'Flash Tattoo // Symbols We Carry',
       description: 'Abadikan potongan emosi terdalam di permukaan kulit. Sesi flash tattoo eksklusif untuk kolektif GNG.',
+      price: 25000, // Harga pendaftaran
       date: new Date('2026-07-20T10:00:00Z'), // Sesuaikan tanggal event
     },
   })
@@ -26,6 +27,7 @@ async function main() {
       slug: 'live-painting',
       title: 'Live Painting // The Face I Show',
       description: 'Eksplorasi wajah dan topeng yang kita tampilkan ke dunia nyata dalam sesi live painting interaktif.',
+      price: 25000, // Harga pendaftaran
       date: new Date('2026-07-21T15:00:00Z'), // Sesuaikan tanggal event
     },
   })

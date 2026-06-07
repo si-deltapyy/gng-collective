@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
-import RegistrationForm from "../flash-tatto/RegistrationForm";
+import RegistrationForm from "../RegistrationForm";
 
 const prisma = new PrismaClient();
 

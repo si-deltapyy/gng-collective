@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { registerEvent } from "@/app/actions/registrationActions";
+import { KonfirmasiDaftar } from "@/app/actions/waActions";
 
 export default function RegistrationForm({ user, eventSlug }: { user: any, eventSlug: string }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,8 +16,9 @@ export default function RegistrationForm({ user, eventSlug }: { user: any, event
     const formData = new FormData(e.currentTarget);
     formData.append("eventSlug", eventSlug);
 
+    // Cukup panggil ini. Database dan WA sudah diurus di dalam fungsi ini!
     const result = await registerEvent(formData);
-    
+
     if (result?.error) {
       setError(result.error);
       setIsLoading(false);
@@ -62,9 +64,9 @@ export default function RegistrationForm({ user, eventSlug }: { user: any, event
             name="phone" 
             type="text" 
             required 
-            defaultValue={user?.phone || ""} 
-            placeholder="0812XXXXXXXX" 
-            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all placeholder-gray-400" 
+            defaultValue={user?.phone || ""}
+            disabled
+            className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-500 cursor-not-allowed font-medium" 
           />
         </div>
         <div className="space-y-2">
@@ -112,7 +114,7 @@ export default function RegistrationForm({ user, eventSlug }: { user: any, event
             <div className="p-5 border border-gray-200 rounded-xl peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:ring-1 peer-checked:ring-blue-500 hover:bg-gray-50 transition-all flex items-center justify-between">
               <span className="font-semibold text-gray-800 peer-checked:text-blue-700">Pelajar/Mahasiswa</span>
               <div className="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:border-blue-500 peer-checked:bg-blue-500 flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-white opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                <div className="w-2 h-2 rounded-full bg-white opacity-0 peer-checked:border-blue-500 peer-checked:bg-blue-500 peer-checked:opacity-100 transition-opacity"></div>
               </div>
             </div>
           </label>

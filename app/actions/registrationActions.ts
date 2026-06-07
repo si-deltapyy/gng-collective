@@ -2,6 +2,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { auth } from "@/auth";
+import { KonfirmasiDaftar } from "./waActions";
 import { redirect } from "next/navigation";
 
 const prisma = new PrismaClient();
@@ -49,6 +50,12 @@ export async function registerEvent(formData: FormData) {
         qualification,
         status: "PENDING", 
       },
+    });
+
+    await KonfirmasiDaftar({
+      nama: session.user.name || "Peserta", // Gunakan nama dari sesi, fallback ke "Peserta"
+      no_wa: formData.get("phone") as string,
+      event: formData.get("eventSlug") as string,
     });
 
   } catch (error: any) {

@@ -1,30 +1,30 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma"; // Pastikan menggunakan prisma global
 import Link from "next/link";
-import PaymentForm from "./PaymentForm"
-import TicketGenerator from "./TicketGenerator";
+import PaymentForm from "./PaymentForm";
+import TicketGenerator from "./TicketGenerator"; 
 
-const prisma = new PrismaClient();
-
-export default async function RegistrationDetail({ params }: { params: { id: string } }) {
+// 1. Ubah tipe params menjadi Promise
+export default async function RegistrationDetail({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session || !session.user) redirect("/login");
 
-  // Tarik data registrasi dan event
-  const registration = await prisma.registration.findFirst({
-    where: { id: params.id },
-    include: { event: true, user: true },
+  // 2. Lakukan 'await' untuk mengekstrak (unwrap) id dari params
+  const { id } = await params;
+
+  // 3. Gunakan 'id' yang sudah diekstrak ke dalam query Prisma
+  const registration = await prisma.registration.findUnique({
+    where: { id: id }, // <-- Gunakan id di sini
+    include: { event: true, user: true }, 
   });
 
-  // Proteksi: Jika data tidak ada atau bukan milik user yang login
   if (!registration || registration.userId !== session.user.id) {
     redirect("/dashboard/my-events");
   }
 
   const { status, event, user } = registration;
   
-  // Format tanggal untuk tiket
   const formattedDate = new Date(event.date).toLocaleDateString("id-ID", { 
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
   });
@@ -61,7 +61,8 @@ export default async function RegistrationDetail({ params }: { params: { id: str
         </Link>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Detail Pendaftaran</h1>
-          <p className="text-sm text-gray-500">ID: {registration.id}</p>
+          {/* Gunakan id di sini juga jika diperlukan */}
+          <p className="text-sm text-gray-500">ID: {id}</p> 
         </div>
       </div>
 
@@ -77,13 +78,14 @@ export default async function RegistrationDetail({ params }: { params: { id: str
             
             <div className="flex flex-col gap-2">
               <span className="text-sm font-semibold text-gray-500">Tanggal Pelaksanaan:</span>
-              <span className="font-bold text-gray-900">{new Date(event.date).toLocaleDateString("id-ID", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+              <span className="font-bold text-gray-900">{formattedDate}</span>
             </div>
           </div>
 
-          {/* Render Komponen Sesuai Status */}
           {status === "PENDING" && (
-            <PaymentForm registrationId={registration.id} />
+            <PaymentForm 
+              registrationId={registration.id}
+              nominal={event.price} />
           )}
 
           {status === "REVIEW" && (
@@ -108,7 +110,6 @@ export default async function RegistrationDetail({ params }: { params: { id: str
               <h3 className="text-xl font-bold text-green-800 mb-2">Pendaftaran Berhasil!</h3>
               <p className="text-green-700 text-sm mb-2">Pembayaran telah diverifikasi. Anda resmi terdaftar dalam event ini.</p>
               
-              {/* Panggil komponen Ticket Generator */}
               <TicketGenerator 
                 registrationId={registration.id}
                 eventName={event.title}

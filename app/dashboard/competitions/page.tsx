@@ -2,15 +2,15 @@ import Link from "next/link";
 
 export default function CompetitionsPage() {
   const competitions = [
-    // {
-    //   id: "flash-tattoo",
-    //   title: "Flash Tattoo Registration",
-    //   category: "Art / Ink",
-    //   description: "Pendaftaran untuk berpartisipasi dalam event Flash Tattoo. Terbuka untuk artist dan client yang ingin mengabadikan karya seni.",
-    //   status: "DIBUKA",
-    //   path: "/dashboard/pendaftaran/flash-tatto",
-    //   color: "blue"
-    // },
+    {
+      id: "flash-tattoo",
+      title: "Flash Tattoo Registration",
+      category: "Art / Ink",
+      description: "Upcoming Event",
+      status: "UPCOMING",
+      path: "#",
+      color: "blue"
+    },
     {
       id: "live-painting",
       title: "Live Painting",
@@ -22,6 +22,7 @@ export default function CompetitionsPage() {
       color: "green"
     }
   ];
+ 
 
   return (
     <div className="animate-fade-in">
@@ -49,10 +50,11 @@ export default function CompetitionsPage() {
                 <i>{comp.inc}</i></p>
               
               <Link 
-                href={comp.path} 
-                className="block w-full text-center px-6 py-3 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-800 transition-colors shadow-sm"
+                href={comp.path}
+                className={`mt-auto inline-block px-5 py-3 text-sm font-bold rounded-full bg-${comp.color}-600 text-white hover:bg-${comp.color}-700 transition-all ${comp.path === "#" ? "cursor-not-allowed opacity-50" : ""}`}
+                
               >
-                Daftar Sekarang &rarr;
+                {comp.path === "#" ? "Segera Hadir" : "Daftar Sekarang →"}
               </Link>
             </div>
           </div>

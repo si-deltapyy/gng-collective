@@ -8,7 +8,7 @@ const prisma = new PrismaClient()
 export const { handlers, signIn, signOut, auth } = NextAuth({
   session: { strategy: "jwt" },
   pages: {
-    signIn: '/login', 
+    signIn: '/auth', 
   },
   providers: [
     Credentials({
@@ -43,8 +43,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return { 
           id: user.id, 
           email: user.email, 
-          name: user.name, 
-          role: user.role 
+          name: user.name,
+          role: user.role
         }
       }
     })

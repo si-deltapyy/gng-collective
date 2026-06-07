@@ -1,15 +1,36 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import { updateRegistrationStatus } from "@/app/actions/adminActions";
-import Link from "next/link";
+import SearchFilter from "./SearchFilter";
 
-const prisma = new PrismaClient();
+// Baris ini akan menonaktifkan caching agresif dari Next.js pada halaman ini
+export const dynamic = "force-dynamic";
 
-export default async function RegistrationsLog() {
-  // Ambil semua pendaftaran yang sudah mengupload bukti (status REVIEW) atau sudah diproses
+export default async function RegistrationsLog({
+  searchParams,
+}: {
+  searchParams: { q?: string; status?: string };
+}) {
+    
+  const query = searchParams?.q || "";
+  const statusFilter = searchParams?.status || "";
+
+  const whereClause: any = {};
+
+  if (statusFilter) {
+    whereClause.status = statusFilter;
+  }
+
+  if (query) {
+    whereClause.user = {
+      name: {
+        contains: query,
+        mode: "insensitive", 
+      },
+    };
+  }
+
   const registrations = await prisma.registration.findMany({
-    where: { 
-      status: { not: "PENDING" } // Jangan tampilkan yang belum upload
-    },
+    where: whereClause,
     include: { 
       user: true,
       event: true
@@ -19,13 +40,17 @@ export default async function RegistrationsLog() {
 
   return (
     <div className="animate-fade-in">
-      <div className="mb-8 flex justify-between items-end">
+      <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
         <div>
           <h1 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">Log Pendaftaran</h1>
           <p className="text-gray-500 font-medium mt-1">Verifikasi pembayaran dan persetujuan partisipan.</p>
         </div>
       </div>
 
+      {/* Panggil komponen pencarian interaktif di sini */}
+      <SearchFilter />
+
+      {/* Tabel Data */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
@@ -41,7 +66,11 @@ export default async function RegistrationsLog() {
             <tbody className="divide-y divide-gray-100">
               {registrations.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-gray-500">Belum ada log pendaftaran untuk direview.</td>
+                  <td colSpan={5} className="p-12 text-center text-gray-500">
+                    {query || statusFilter 
+                      ? "Tidak ada pendaftaran yang sesuai dengan pencarian Anda." 
+                      : "Belum ada log pendaftaran."}
+                  </td>
                 </tr>
               ) : (
                 registrations.map((reg) => (
@@ -63,13 +92,15 @@ export default async function RegistrationsLog() {
                           Lihat File
                         </a>
                       ) : (
-                        <span className="text-gray-400 text-sm">Tidak ada</span>
+                        <span className="text-gray-400 text-sm">Belum Upload</span>
                       )}
                     </td>
                     <td className="p-4">
+                      {/* Warna Status */}
                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                         reg.status === 'REVIEW' ? 'bg-yellow-100 text-yellow-800' : 
-                        reg.status === 'APPROVED' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        reg.status === 'APPROVED' ? 'bg-green-100 text-green-800' : 
+                        reg.status === 'PENDING' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800'
                       }`}>
                         {reg.status}
                       </span>
