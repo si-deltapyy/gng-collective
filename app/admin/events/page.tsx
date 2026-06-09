@@ -16,6 +16,6 @@ export default async function AdminEventPage() {
   });
 
   return (
-    <EventManager initialEvents={events} />
+    <EventManager initialEvents={events}/>
   );
 }

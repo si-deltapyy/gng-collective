@@ -11,7 +11,22 @@ type Event = {
   description: string;
   date: Date;
   price: number;
+  status: string;
   createdAt: Date;
+  includes: string;
+};
+
+const getBadgeStyle = (status: string) => {
+  switch (status) {
+    case 'PUBLISHED':
+      return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+    case 'DRAFT':
+      return 'bg-amber-50 text-amber-700 border-amber-200';
+    case 'ARCHIVED':
+      return 'bg-slate-50 text-slate-700 border-slate-200';
+    default:
+      return 'bg-gray-50 text-gray-700 border-gray-200';
+  }
 };
 
 export default function EventManager({ initialEvents }: { initialEvents: Event[] }) {
@@ -94,6 +109,7 @@ export default function EventManager({ initialEvents }: { initialEvents: Event[]
                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Info Event</th>
                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Tanggal & Harga</th>
                 <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Tanggal Dibuat</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Status</th>
                 <th className="px-6 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Aksi</th>
               </tr>
             </thead>
@@ -113,6 +129,18 @@ export default function EventManager({ initialEvents }: { initialEvents: Event[]
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatDateForTable(event.createdAt)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold tracking-wide border ${getBadgeStyle(event.status)}`}>
+                        {/* Opsional: Tambahkan dot kecil agar lebih manis */}
+                        <span className={`w-1.5 h-1.5 rounded-full mr-2 ${
+                          event.status === 'PUBLISHED' ? 'bg-emerald-500' : 
+                          event.status === 'DRAFT' ? 'bg-amber-500' : 'bg-slate-400'
+                        }`}></span>
+                        
+                        {/* Tampilkan teks status */}
+                        {event.status}
+                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button onClick={() => handleEdit(event)} className="text-blue-600 hover:text-blue-900 font-bold px-3 py-1 bg-blue-50 rounded-lg mr-2">Edit</button>
@@ -147,9 +175,24 @@ export default function EventManager({ initialEvents }: { initialEvents: Event[]
                 <input type="text" name="title" required defaultValue={editingEvent?.title || ""} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 outline-none text-sm text-gray-800" placeholder="Contoh: Flash Tattoo Vol. 1" />
               </div>
               
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">URL Slug (Unik)</label>
-                <input type="text" name="slug" required defaultValue={editingEvent?.slug || ""} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 outline-none text-sm text-gray-800" placeholder="contoh: flash-tattoo-vol-1" />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">URL Slug (Unik)</label>
+                  <input type="text" name="slug" required defaultValue={editingEvent?.slug || ""} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 outline-none text-sm text-gray-800" placeholder="contoh: flash-tattoo-vol-1" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Status</label>
+                  <select name="status" required defaultValue={editingEvent?.status || "DRAFT"} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 outline-none text-sm text-gray-800">
+                    <option value="DRAFT">DRAFT</option>
+                    <option value="PUBLISHED">PUBLISHED</option>
+                    <option value="ARCHIVED">ARCHIVED</option>
+                  </select>
+                  <small className="text-gray-500">
+                    <li><strong>DRAFT</strong>: Event belum siap dipublikasikan, tidak akan muncul di halaman pendaftaran.</li>
+                    <li><strong>PUBLISHED</strong>: Event sudah aktif dan dapat diakses oleh peserta.</li>
+                    <li><strong>ARCHIVED</strong>: Event sudah tidak aktif, tetap terlihat di halaman pendaftaran tapi dengan label "Segera Hadir" dan tidak bisa didaftarkan.</li>
+                  </small>
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
@@ -167,6 +210,12 @@ export default function EventManager({ initialEvents }: { initialEvents: Event[]
                 <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Deskripsi Singkat</label>
                 <textarea name="description" rows={3} required defaultValue={editingEvent?.description || ""} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 outline-none text-sm text-gray-800 resize-none" placeholder="Deskripsi event..." />
               </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">Termasuk</label>
+                <input type="text" name="includes" required defaultValue={editingEvent?.includes || ""} className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 outline-none text-sm text-gray-800" placeholder="Contoh: Sertifikat, Merchandise, dll." />
+              </div>
+              
 
               <div className="pt-4 flex justify-end gap-2">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-5 py-2.5 text-sm font-bold text-gray-600 hover:bg-gray-100 rounded-xl transition-colors">Batal</button>
